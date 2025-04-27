@@ -197,17 +197,23 @@ function randomBetween(min, max) { return Math.floor(Math.random() * (max - min 
 
 // --- Send Thank You EmailJS ---
 function sendThankYouEmail() {
-  emailjs.send('service_kbtqoqh', 'template_d5btiri', {
-    name: "Legend User",
-    email: "user@example.com",
-    message: "Thanks for showing coffee love! ☕️🚀"
-  }, 'bwXYuKi_isO1fgwLl')
-  .then(function(response) {
-    console.log('✅ Email sent successfully!', response.status, response.text);
-  }, function(error) {
-    console.error('❌ Failed to send email', error);
-  });
+  const user = firebase.auth().currentUser;
+  if (user) {
+    emailjs.send('service_kbtqoqh', 'template_d5btiri', {
+      name: user.displayName || "Math Practice User",
+      email: user.email,
+      message: "Thanks for showing coffee love! ☕️🚀"
+    }, 'bwXYuKi_isO1fgwLl')
+    .then(function(response) {
+      console.log('✅ Email sent successfully!', response.status, response.text);
+    }, function(error) {
+      console.error('❌ Failed to send email', error);
+    });
+  } else {
+    console.log('User not logged in, cannot send thank you email.');
+  }
 }
+
 
 // --- Donate Button Handling ---
 function donateNow() {
