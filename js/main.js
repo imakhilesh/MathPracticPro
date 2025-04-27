@@ -1,3 +1,5 @@
+// Updated main.js with Payment/Ad system
+
 // Check if user is logged in
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
@@ -53,6 +55,7 @@ function backToWelcome() {
   document.getElementById('setupScreen').style.display = 'none';
   document.getElementById('endScreen').style.display = 'none';
   document.getElementById('gameScreen').style.display = 'none';
+  document.getElementById('paymentModal').style.display = 'none';
   document.getElementById('welcomeScreen').style.display = 'block';
 }
 
@@ -71,6 +74,25 @@ let correctAnswers = 0;
 let startTime;
 let timer;
 let timerDuration = 15000;
+
+function checkAccessBeforeStart() {
+  if (localStorage.getItem("paidUser") === "true") {
+    startGame();
+  } else {
+    document.getElementById('setupScreen').style.display = 'none';
+    document.getElementById('paymentModal').style.display = 'block';
+  }
+}
+
+function payNow() {
+  window.location.href = "https://rzp.io/r/KrFqOuM";
+}
+
+function watchAd() {
+  alert("Imagine ad here... 😅 (Real ads coming soon!)");
+  document.getElementById('paymentModal').style.display = 'none';
+  document.getElementById('setupScreen').style.display = 'block';
+}
 
 function startGame() {
   const count = parseInt(document.getElementById('questionCount').value);
