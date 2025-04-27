@@ -14,3 +14,6 @@ firebase.initializeApp(firebaseConfig);
 
 // Initialize Firestore
 firebase.firestore();
+
+// Initialize Analytics (important now!)
+firebase.analytics();
