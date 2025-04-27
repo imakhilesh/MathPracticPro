@@ -160,7 +160,7 @@ function randomBetween(min, max) { return Math.floor(Math.random() * (max - min 
 function sendThankYouEmail() {
   const user = firebase.auth().currentUser;
   if (user) {
-    emailjs.send('service_kbtqoqh', 'template_d5btiri', {
+    emailjs.send('service_kbtqoqh', 'template_ucsaksa', {
       name: user.displayName || "Math Practice User",
       email: user.email,
       message: "Thanks for showing coffee love! ☕️🚀"
