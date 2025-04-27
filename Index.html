@@ -41,7 +41,8 @@
       <button onclick="selectMode('mixed')">Mixed Practice</button>
     </div>
 
-    <button id="logoutBtn" class="back-btn" style="margin-top: 20px;">Logout</button>
+    <button id="donateButton" class="coffee-btn" onclick="donateNow()">☕ Buy Creator a Coffee</button>
+    <button id="logoutBtn" class="back-btn" style="margin-top: 10px;">Logout</button>
   </div>
 
   <!-- Setup Screen -->
@@ -149,8 +150,12 @@
 <!-- Donation Modal Script -->
 <script>
   function checkDonationPopup() {
-    document.getElementById('donationModal').style.display = 'block';
-    document.getElementById('setupScreen').style.display = 'none';
+    if (!localStorage.getItem("donationPromptShown")) {
+      document.getElementById('donationModal').style.display = 'block';
+      document.getElementById('setupScreen').style.display = 'none';
+    } else {
+      startGame();
+    }
   }
 
   function donateNow() {
@@ -159,6 +164,7 @@
 
   function continuePlaying() {
     document.getElementById('donationModal').style.display = 'none';
+    localStorage.setItem("donationPromptShown", "true");
     startGame();
   }
 </script>
