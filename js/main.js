@@ -1,4 +1,4 @@
-// Updated main.js WITHOUT payment block
+// Updated main.js to support "Buy Creator a Coffee" button and Donation Popup
 
 // Check if user is logged in
 firebase.auth().onAuthStateChanged(user => {
@@ -100,10 +100,10 @@ function startGame() {
     } else if (selectedMode === 'subtraction') {
       question = `${a} - ${b}`; answer = a - b;
     } else if (selectedMode === 'multiplication') {
-      question = `${a} × ${b}`; answer = a * b;
+      question = `${a} \u00d7 ${b}`; answer = a * b;
     } else if (selectedMode === 'division') {
       let product = a * b;
-      question = `${product} ÷ ${a}`; answer = b;
+      question = `${product} \u00f7 ${a}`; answer = b;
     } else if (selectedMode === 'mixed') {
       const modes = ['addition', 'subtraction', 'multiplication', 'division'];
       const randomMode = modes[Math.floor(Math.random() * modes.length)];
@@ -112,10 +112,10 @@ function startGame() {
       } else if (randomMode === 'subtraction') {
         question = `${a} - ${b}`; answer = a - b;
       } else if (randomMode === 'multiplication') {
-        question = `${a} × ${b}`; answer = a * b;
+        question = `${a} \u00d7 ${b}`; answer = a * b;
       } else if (randomMode === 'division') {
         let product = a * b;
-        question = `${product} ÷ ${a}`; answer = b;
+        question = `${product} \u00f7 ${a}`; answer = b;
       }
     }
 
