@@ -10,6 +10,16 @@
 <body>
   <div id="overlay"></div>
 
+  <!-- Payment/Ad Modal -->
+  <div id="paymentModal" class="container" style="display:none;">
+    <h2>Support MathPracticePro</h2>
+    <p>Choose an option to continue:</p>
+    <div class="menu-buttons">
+      <button onclick="payNow()">Pay ₹99 - Lifetime Access</button>
+      <button onclick="watchAd()">Watch an Ad</button>
+    </div>
+  </div>
+
   <!-- Login Screen -->
   <div id="loginScreen" class="container" style="display: none;">
     <h1>Login to Continue</h1>
@@ -88,7 +98,7 @@
       </select>
     </div>
 
-    <button onclick="startGame()">Start Practice</button>
+    <button onclick="checkAccessBeforeStart()">Start Practice</button>
     <button class="back-btn" onclick="backToWelcome()">Back</button>
   </div>
 
@@ -135,6 +145,29 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="firebase-config.js"></script>
 <script src="js/main.js"></script>
+
+<!-- Payment and Ad Scripts -->
+<script>
+  function checkAccessBeforeStart() {
+    if (localStorage.getItem("paidUser") === "true") {
+      startGame();
+    } else {
+      document.getElementById('welcomeScreen').style.display = 'none';
+      document.getElementById('setupScreen').style.display = 'none';
+      document.getElementById('paymentModal').style.display = 'block';
+    }
+  }
+
+  function payNow() {
+    window.location.href = "https://rzp.io/r/KrFqOuM"; // Your Razorpay payment link
+  }
+
+  function watchAd() {
+    alert("Imagine ad here... 😅 (We'll integrate real AdSense later!)");
+    document.getElementById('paymentModal').style.display = 'none';
+    document.getElementById('setupScreen').style.display = 'block';
+  }
+</script>
+
 </body>
 </html>
-
