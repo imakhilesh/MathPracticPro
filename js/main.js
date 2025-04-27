@@ -1,4 +1,4 @@
-// Updated main.js to Save User + Show Welcome Name 🎉
+// Updated main.js to Save User + Show Welcome Name 🎉 + Analytics 🚀
 
 // Check if user is logged in
 firebase.auth().onAuthStateChanged(user => {
@@ -22,6 +22,7 @@ document.getElementById('loginBtn').addEventListener('click', () => {
   firebase.auth().signInWithPopup(provider)
     .then(result => {
       console.log('Logged in');
+      firebase.analytics().logEvent('login', { method: 'Google' }); // 🔥 Track login event
     })
     .catch(error => {
       console.error('Login Error:', error.message);
@@ -33,6 +34,7 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
   firebase.auth().signOut()
     .then(() => {
       console.log('Logged out');
+      firebase.analytics().logEvent('logout'); // 🔥 Track logout event
     })
     .catch(error => {
       console.error('Logout Error:', error.message);
@@ -58,6 +60,9 @@ function selectMode(mode) {
   selectedMode = mode;
   document.getElementById('welcomeScreen').style.display = 'none';
   document.getElementById('setupScreen').style.display = 'block';
+
+  // Track which mode user selected
+  firebase.analytics().logEvent('select_mode', { mode: selectedMode }); // 🔥 Track mode select
 
   if (['addition','subtraction','multiplication','division'].includes(mode)) {
     document.getElementById('digitRangeFields').style.display = 'block';
@@ -213,6 +218,8 @@ function showEndScreen() {
 
   const totalSec = (new Date() - startTime) / 1000;
   document.getElementById('avgTime').textContent = (totalSec / totalQuestions).toFixed(1);
+
+  firebase.analytics().logEvent('game_complete', { score, accuracy }); // 🔥 Track game complete
 }
 
 function playAgain() {
