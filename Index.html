@@ -143,26 +143,24 @@
     <button class="back-btn" onclick="backToWelcome()">Back to Home</button>
   </div>
 
-<!-- Sounds -->
-<audio id="correctSound" src="audio/correct.mp3" preload="auto"></audio>
-<audio id="wrongSound" src="audio/wrong.mp3" preload="auto"></audio>
+  <!-- Sounds -->
+  <audio id="correctSound" src="audio/correct.mp3" preload="auto"></audio>
+  <audio id="wrongSound" src="audio/wrong.mp3" preload="auto"></audio>
 
-<!-- Firebase + Main JS -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
-<script src="firebase-config.js"></script>
+  <!-- Firebase + EmailJS + Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+  <script src="firebase-config.js"></script>
 
-<!-- EmailJS -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
-<script>
-  (function(){
-    emailjs.init("bwXYuKi_isO1fgwLl"); // ✅ Your NEW public key
-  })();
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("bwXYuKi_isO1fgwLl"); // Your updated Public Key
+    })();
+  </script>
 
-<script src="js/main.js"></script> <!-- Your corrected full main.js is here -->
-
+  <script src="js/main.js"></script>
 </body>
 </html>
