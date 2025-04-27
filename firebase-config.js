@@ -1,4 +1,4 @@
-// Initialize Firebase (Correct version)
+// Initialize Firebase (Updated Version)
 var firebaseConfig = {
   apiKey: "AIzaSyByamMVylg7lGUI8hwrrBxJ1orpKetXsTM",
   authDomain: "math-practice-app-791d2.firebaseapp.com",
@@ -8,4 +8,9 @@ var firebaseConfig = {
   appId: "1:307926082379:web:a65642d80289bf6161fece",
   measurementId: "G-JYF6FZ6D3P"
 };
+
+// Initialize Firebase App
 firebase.initializeApp(firebaseConfig);
+
+// (Optional) Initialize Firebase Analytics if needed in future
+// firebase.analytics(); // Only if you setup Analytics separately
