@@ -157,25 +157,34 @@
 
 <!-- Donation Modal Script -->
 <script>
-  function checkDonationPopup() {
-    if (!localStorage.getItem("donationPromptShown")) {
-      document.getElementById('donationModal').style.display = 'block';
-      document.getElementById('setupScreen').style.display = 'none';
-    } else {
-      startGame();
-    }
-  }
-
-  function donateNow() {
-    window.open("https://rzp.io/r/KrFqOuM", "_blank");
-  }
-
-  function continuePlaying() {
-    document.getElementById('donationModal').style.display = 'none';
-    localStorage.setItem("donationPromptShown", "true");
+function checkDonationPopup() {
+  if (!localStorage.getItem("donationPromptShown")) {
+    document.getElementById('donationModal').style.display = 'block';
+    document.getElementById('setupScreen').style.display = 'none';
+  } else {
     startGame();
   }
+}
+
+function donateNow() {
+  firebase.analytics().logEvent('donate_click'); // 🔥 Track the donation button click
+  
+  // Open the Razorpay donation page
+  window.open("https://rzp.io/r/KrFqOuM", "_blank");
+
+  // Show Thank You message
+  setTimeout(() => {
+    alert("🙏 Thank you for supporting the creator! ❤️");
+  }, 1000); // Show after 1 second
+}
+
+function continuePlaying() {
+  document.getElementById('donationModal').style.display = 'none';
+  localStorage.setItem("donationPromptShown", "true");
+  startGame();
+}
 </script>
+
 
 </body>
 </html>
