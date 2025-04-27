@@ -1,4 +1,4 @@
-// Updated main.js to Save User + Show Welcome Name 🎉 + Analytics 🚀 + Fix Coffee Button
+// main.js - Full Updated with EmailJS + Firebase + Analytics
 
 // Check if user is logged in
 firebase.auth().onAuthStateChanged(user => {
@@ -22,7 +22,7 @@ document.getElementById('loginBtn').addEventListener('click', () => {
   firebase.auth().signInWithPopup(provider)
     .then(result => {
       console.log('Logged in');
-      firebase.analytics().logEvent('login', { method: 'Google' }); // 🔥 Track login event
+      firebase.analytics().logEvent('login', { method: 'Google' });
     })
     .catch(error => {
       console.error('Login Error:', error.message);
@@ -34,17 +34,11 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
   firebase.auth().signOut()
     .then(() => {
       console.log('Logged out');
-      firebase.analytics().logEvent('logout'); // 🔥 Track logout event
+      firebase.analytics().logEvent('logout');
     })
     .catch(error => {
       console.error('Logout Error:', error.message);
     });
-});
-
-// Buy Coffee Button
-document.getElementById('donateButton').addEventListener('click', () => {
-  window.open("https://rzp.io/r/KrFqOuM", "_blank");
-  firebase.analytics().logEvent('donate_button_clicked'); // 🔥 Track Donate Click
 });
 
 // Save user info to Firestore
@@ -67,7 +61,7 @@ function selectMode(mode) {
   document.getElementById('welcomeScreen').style.display = 'none';
   document.getElementById('setupScreen').style.display = 'block';
 
-  firebase.analytics().logEvent('select_mode', { mode: selectedMode }); // 🔥 Track mode select
+  firebase.analytics().logEvent('select_mode', { mode: selectedMode });
 
   if (['addition','subtraction','multiplication','division'].includes(mode)) {
     document.getElementById('digitRangeFields').style.display = 'block';
@@ -224,7 +218,7 @@ function showEndScreen() {
   const totalSec = (new Date() - startTime) / 1000;
   document.getElementById('avgTime').textContent = (totalSec / totalQuestions).toFixed(1);
 
-  firebase.analytics().logEvent('game_complete', { score, accuracy }); // 🔥 Track game complete
+  firebase.analytics().logEvent('game_complete', { score, accuracy });
 }
 
 function playAgain() {
@@ -233,4 +227,29 @@ function playAgain() {
 
 function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Function to send Thank You email using EmailJS
+function sendThankYouEmail(userEmail, userName) {
+  emailjs.send('service_kbtqoqh', 'template_ucsaksa', {
+    email: userEmail,
+    name: userName
+  }, 'EKeWNbB4SSzOqQt8w')
+  .then(function(response) {
+    console.log('✅ Thank You email sent!', response.status, response.text);
+  }, function(error) {
+    console.error('❌ Failed to send Thank You email:', error);
+  });
+}
+
+// Updated donateNow() function
+function donateNow() {
+  const user = firebase.auth().currentUser;
+  if (user) {
+    sendThankYouEmail(user.email, user.displayName);
+  } else {
+    console.log("User not logged in. Cannot send Thank You email.");
+  }
+
+  window.open("https://rzp.io/r/KrFqOuM", "_blank");
 }
