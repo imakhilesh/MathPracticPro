@@ -251,5 +251,11 @@ function donateNow() {
     console.log("User not logged in. Cannot send Thank You email.");
   }
 
+  firebase.analytics().logEvent('donate_click');
   window.open("https://rzp.io/r/KrFqOuM", "_blank");
 }
+
+// Connect the "Buy Creator a Coffee" button properly
+document.getElementById('donateButton').addEventListener('click', function() {
+  donateNow();
+});
