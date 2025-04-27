@@ -244,17 +244,23 @@ function sendThankYouEmail(userEmail, userName) {
 
 // Updated donateNow() function
 function donateNow() {
+  const user = firebase.auth().currentUser;
+  if (user) {
+    // Send to the real user
+    emailjs.send("service_kbtqoqh", "template_d5btiri", {
+      name: user.displayName || "MathPracticePro User",
+      email: user.email,
+      message: "Thanks for showing coffee love! ☕🚀"
+    }).then(function(response) {
+      console.log('✅ Email sent successfully!', response.status, response.text);
+    }, function(error) {
+      console.error('❌ FAILED to send email', error);
+    });
+  } else {
+    console.log('❌ No user logged in, cannot send email.');
+  }
+
   firebase.analytics().logEvent('donate_click');
-  
-  emailjs.send("service_kbtqoqh", "template_d5btiri", {
-    name: "MathPracticePro User",
-    email: "user@example.com", // (if you have user email, put dynamic)
-    message: "Thanks for showing coffee love! ☕🚀"
-  }).then(function(response) {
-    console.log('✅ Email sent successfully!', response.status, response.text);
-  }, function(error) {
-    console.error('❌ FAILED to send email', error);
-  });
 
   window.open("https://rzp.io/r/KrFqOuM", "_blank");
 
