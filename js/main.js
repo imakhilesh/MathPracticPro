@@ -1,10 +1,15 @@
-// Updated main.js to support "Buy Creator a Coffee" button and Donation Popup
+// Updated main.js to Save User + Show Welcome Name 🎉
 
 // Check if user is logged in
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('welcomeScreen').style.display = 'block';
+
+    const userName = user.displayName || "User";
+    document.getElementById('welcomeUserName').innerHTML = `Welcome, ${userName}! 🎉`;
+
+    saveUserData(user); // Save to Firestore
   } else {
     document.getElementById('loginScreen').style.display = 'block';
     document.getElementById('welcomeScreen').style.display = 'none';
@@ -33,6 +38,18 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
       console.error('Logout Error:', error.message);
     });
 });
+
+// Save user info to Firestore
+function saveUserData(user) {
+  firebase.firestore().collection('users').doc(user.uid).set({
+    name: user.displayName,
+    email: user.email,
+    photoURL: user.photoURL,
+    lastLogin: new Date()
+  }, { merge: true })
+  .then(() => console.log('User data saved'))
+  .catch(error => console.error('Error saving user data:', error));
+}
 
 // Practice Setup
 let selectedMode = "";
@@ -100,10 +117,10 @@ function startGame() {
     } else if (selectedMode === 'subtraction') {
       question = `${a} - ${b}`; answer = a - b;
     } else if (selectedMode === 'multiplication') {
-      question = `${a} \u00d7 ${b}`; answer = a * b;
+      question = `${a} × ${b}`; answer = a * b;
     } else if (selectedMode === 'division') {
       let product = a * b;
-      question = `${product} \u00f7 ${a}`; answer = b;
+      question = `${product} ÷ ${a}`; answer = b;
     } else if (selectedMode === 'mixed') {
       const modes = ['addition', 'subtraction', 'multiplication', 'division'];
       const randomMode = modes[Math.floor(Math.random() * modes.length)];
@@ -112,10 +129,10 @@ function startGame() {
       } else if (randomMode === 'subtraction') {
         question = `${a} - ${b}`; answer = a - b;
       } else if (randomMode === 'multiplication') {
-        question = `${a} \u00d7 ${b}`; answer = a * b;
+        question = `${a} × ${b}`; answer = a * b;
       } else if (randomMode === 'division') {
         let product = a * b;
-        question = `${product} \u00f7 ${a}`; answer = b;
+        question = `${product} ÷ ${a}`; answer = b;
       }
     }
 
