@@ -200,3 +200,11 @@ body {
 #buyCoffeeBtn:hover {
   background: #ff7320;
 }
+/* Welcome Username Styling */
+#welcomeUserName {
+  color: #ffd700; /* Golden Color */
+  font-size: 22px;
+  margin-top: -10px;
+  margin-bottom: 25px;
+}
+
