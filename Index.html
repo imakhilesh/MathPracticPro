@@ -164,33 +164,34 @@
   })();
 </script>
 
-<!-- Donation Modal Script -->
 <script>
 function checkDonationPopup() {
-  if (!localStorage.getItem("donationPromptShown")) {
-    document.getElementById('donationModal').style.display = 'block';
-    document.getElementById('setupScreen').style.display = 'none';
-  } else {
-    startGame();
-  }
+  // existing code...
 }
 
+// ✨ New donateNow
 function donateNow() {
-  firebase.analytics().logEvent('donate_click'); // 🔥 Track the donation button click
+  firebase.analytics().logEvent('donate_click');
   
-  // Open the Razorpay donation page
+  emailjs.send("service_kbtqoqh", "template_ucsaksa", {
+    name: "MathPracticePro User",
+    email: "user@example.com",
+    message: "Thanks for showing coffee love! ☕🚀"
+  }).then(function(response) {
+    console.log('Email sent successfully!', response.status, response.text);
+  }, function(error) {
+    console.error('FAILED to send email', error);
+  });
+
   window.open("https://rzp.io/r/KrFqOuM", "_blank");
 
-  // Show Thank You message
   setTimeout(() => {
     alert("🙏 Thank you for supporting the creator! ❤️");
-  }, 1000); // Show after 1 second
+  }, 1000);
 }
 
 function continuePlaying() {
-  document.getElementById('donationModal').style.display = 'none';
-  localStorage.setItem("donationPromptShown", "true");
-  startGame();
+  // existing code...
 }
 </script>
 
