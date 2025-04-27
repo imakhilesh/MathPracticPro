@@ -179,4 +179,24 @@ body {
       font-size: 16px;
     }
   }
-  
+  /* Buy Me Coffee Button */
+#buyCoffeeBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ff914d;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: background 0.3s;
+}
+
+#buyCoffeeBtn:hover {
+  background: #ff7320;
+}
