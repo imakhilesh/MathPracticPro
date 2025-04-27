@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MathPracticePro - Squares & Cubes</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="overlay"></div>
+
+  <div id="setupScreen" class="container">
+    <h1>Squares & Cubes</h1>
+
+    <div class="input-group">
+      <label>Choose Mode:</label>
+      <select id="mode" onchange="toggleRangeInputs()">
+        <option value="square">Square</option>
+        <option value="cube">Cube</option>
+        <option value="mixed">Mixed</option>
+      </select>
+    </div>
+
+    <div id="squareRange" style="display: block;">
+      <div class="input-group">
+        <label>Square Start Range:</label>
+        <input type="number" id="squareStartRange" value="1" min="1">
+      </div>
+      <div class="input-group">
+        <label>Square End Range:</label>
+        <input type="number" id="squareEndRange" value="20" min="1">
+      </div>
+    </div>
+
+    <div id="cubeRange" style="display: none;">
+      <div class="input-group">
+        <label>Cube Start Range:</label>
+        <input type="number" id="cubeStartRange" value="1" min="1">
+      </div>
+      <div class="input-group">
+        <label>Cube End Range:</label>
+        <input type="number" id="cubeEndRange" value="10" min="1">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Difficulty:</label>
+      <select id="difficulty">
+        <option value="easy">Easy (15s)</option>
+        <option value="medium">Medium (10s)</option>
+        <option value="hard">Hard (5s)</option>
+      </select>
+    </div>
+
+    <button onclick="startGame()">Start Practice</button>
+    <button class="back-btn" onclick="goHome()">Back to Home</button>
+  </div>
+
+  <div id="gameScreen" class="container" style="display:none;">
+    <div class="top-bar">
+      <div>Score: <span id="score">0</span></div>
+      <div>High Score: <span id="highScore">0</span></div>
+    </div>
+
+    <div class="progress-bar-container">
+      <div id="progressBar"></div>
+    </div>
+
+    <div class="timer-bar-container">
+      <div id="timerBar"></div>
+    </div>
+
+    <!-- 👇 ADDED this line -->
+    <div id="questionProgress" class="progress-numbers"></div>
+
+    <div class="question-big" id="question">?</div>
+
+    <input type="number" id="answerInput" placeholder="Type your answer" autofocus />
+    <div id="bigFeedback" class="big-feedback"></div>
+
+    <button onclick="submitAnswer()">Submit</button>
+    <button class="back-btn" onclick="endGame()">End Game</button>
+  </div>
+
+  <audio id="correctSound" src="../audio/correct.mp3" preload="auto"></audio>
+  <audio id="wrongSound" src="../audio/wrong.mp3" preload="auto"></audio>
+
+  <script src="../firebase-config.js"></script>
+  <script src="../js/squarecube.js"></script>
+</body>
+</html>

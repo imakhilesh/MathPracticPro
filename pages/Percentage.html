@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MathPracticePro - Percentages</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="overlay"></div>
+
+  <div id="gameScreen" class="container">
+    <h1>Percentages Practice</h1>
+
+    <div class="top-bar">
+      <div>Score: <span id="score">0</span></div>
+      <div>High Score: <span id="highScore">0</span></div>
+    </div>
+
+    <div class="progress-bar-container">
+      <div id="progressBar"></div>
+    </div>
+
+    <div class="timer-bar-container">
+      <div id="timerBar"></div>
+    </div>
+
+    <div class="progress-numbers" id="questionProgress">Question 1 / 73</div>
+
+    <div class="question-big" id="question">Loading...</div>
+
+    <!-- Options arranged 2x2 -->
+    <div id="options" class="menu-buttons"></div>
+
+    <button class="back-btn" onclick="goHome()">Back to Home</button>
+  </div>
+
+  <audio id="correctSound" src="../audio/correct.mp3" preload="auto"></audio>
+  <audio id="wrongSound" src="../audio/wrong.mp3" preload="auto"></audio>
+
+  <script src="../firebase-config.js"></script>
+  <script src="../js/percentage.js"></script>
+</body>
+</html>

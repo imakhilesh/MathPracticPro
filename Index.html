@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MathPracticePro - Master Math Basics</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="overlay"></div>
+
+  <!-- Login Screen -->
+  <div id="loginScreen" class="container" style="display: none;">
+    <h1>Login to Continue</h1>
+    <button id="loginBtn">Sign in with Google</button>
+  </div>
+
+  <!-- Welcome Screen -->
+  <div id="welcomeScreen" class="container" style="display: none;">
+    <h1>Welcome to MathPracticePro!</h1>
+    <p>Choose what you want to practice:</p>
+
+    <div class="menu-buttons">
+      <button onclick="selectMode('addition')">Addition</button>
+      <button onclick="selectMode('subtraction')">Subtraction</button>
+      <button onclick="selectMode('multiplication')">Multiplication</button>
+      <button onclick="selectMode('division')">Division</button>
+      <a href="pages/SquareCube.html"><button>Squares & Cubes</button></a>
+      <a href="pages/Percentage.html"><button>Percentages</button></a>
+      <button onclick="selectMode('mixed')">Mixed Practice</button>
+    </div>
+
+    <button id="logoutBtn" class="back-btn" style="margin-top: 20px;">Logout</button>
+  </div>
+
+  <!-- Setup Screen -->
+  <div id="setupScreen" class="container" style="display: none;">
+    <h2>Setup Your Practice</h2>
+
+    <div id="digitRangeFields" style="display: none;">
+      <div class="input-group">
+        <label>First Number Digits:</label>
+        <select id="digitsA">
+          <option value="1">1-digit</option>
+          <option value="2">2-digit</option>
+          <option value="3" selected>3-digit</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>Second Number Digits:</label>
+        <select id="digitsB">
+          <option value="1">1-digit</option>
+          <option value="2" selected>2-digit</option>
+          <option value="3">3-digit</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="normalRangeFields" style="display: none;">
+      <div class="input-group">
+        <label>Start Number:</label>
+        <input type="number" id="startRange" value="1" min="0" />
+      </div>
+      <div class="input-group">
+        <label>End Number:</label>
+        <input type="number" id="endRange" value="20" min="1" />
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Skill Level:</label>
+      <select id="difficulty">
+        <option value="noob">Noob (5 min)</option>
+        <option value="beginner">Beginner (2 min)</option>
+        <option value="pro">Pro (1 min)</option>
+        <option value="advanced">Advanced (30 sec)</option>
+        <option value="god">God (10 sec)</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label>Number of Questions:</label>
+      <select id="questionCount">
+        <option value="10">10</option>
+        <option value="20" selected>20</option>
+        <option value="50">50</option>
+      </select>
+    </div>
+
+    <button onclick="startGame()">Start Practice</button>
+    <button class="back-btn" onclick="backToWelcome()">Back</button>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="gameScreen" class="container" style="display: none;">
+    <div class="top-bar">
+      <div>Score: <span id="score">0</span></div>
+      <div>High Score: <span id="highScore">0</span></div>
+    </div>
+
+    <div class="progress-bar-container">
+      <div id="progressBar"></div>
+    </div>
+
+    <div class="timer-bar-container">
+      <div id="timerBar"></div>
+    </div>
+    <div id="questionProgress" class="progress-numbers"></div>
+    <div class="question-big" id="question">?</div>
+
+    <input type="number" id="answerInput" placeholder="Type your answer" autofocus />
+    <div id="bigFeedback" class="big-feedback"></div>
+
+    <button onclick="submitAnswer()">Submit</button>
+    <button class="back-btn" onclick="backToSetup()">Back to Setup</button>
+  </div>
+
+  <!-- End Screen -->
+  <div id="endScreen" class="container" style="display: none;">
+    <h2>Practice Complete!</h2>
+    <p>Final Score: <span id="finalScore"></span></p>
+    <p>Accuracy: <span id="accuracy"></span>%</p>
+    <p>Avg Time: <span id="avgTime"></span> sec/question</p>
+    <button onclick="playAgain()">Practice Again</button>
+    <button class="back-btn" onclick="backToWelcome()">Back to Home</button>
+  </div>
+
+<!-- Sounds -->
+<audio id="correctSound" src="audio/correct.mp3" preload="auto"></audio>
+<audio id="wrongSound" src="audio/wrong.mp3" preload="auto"></audio>
+
+<!-- Firebase + Main JS -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="firebase-config.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
+
