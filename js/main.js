@@ -244,18 +244,22 @@ function sendThankYouEmail(userEmail, userName) {
 
 // Updated donateNow() function
 function donateNow() {
-  const user = firebase.auth().currentUser;
-  if (user) {
-    sendThankYouEmail(user.email, user.displayName);
-  } else {
-    console.log("User not logged in. Cannot send Thank You email.");
-  }
-
   firebase.analytics().logEvent('donate_click');
+  
+  emailjs.send("service_kbtqoqh", "template_d5btiri", {
+    name: "MathPracticePro User",
+    email: "user@example.com", // (if you have user email, put dynamic)
+    message: "Thanks for showing coffee love! ☕🚀"
+  }).then(function(response) {
+    console.log('✅ Email sent successfully!', response.status, response.text);
+  }, function(error) {
+    console.error('❌ FAILED to send email', error);
+  });
+
   window.open("https://rzp.io/r/KrFqOuM", "_blank");
+
+  setTimeout(() => {
+    alert("🙏 Thank you for supporting the creator! ❤️");
+  }, 1000);
 }
 
-// Connect the "Buy Creator a Coffee" button properly
-document.getElementById('donateButton').addEventListener('click', function() {
-  donateNow();
-});
