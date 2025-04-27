@@ -197,3 +197,18 @@ function donateNow() {
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('donateButton').addEventListener('click', donateNow);
 });
+function checkDonationPopup() {
+  if (!localStorage.getItem("donationPromptShown")) {
+    document.getElementById('donationModal').style.display = 'block';
+    document.getElementById('setupScreen').style.display = 'none';
+  } else {
+    startGame();
+  }
+}
+
+function continuePlaying() {
+  document.getElementById('donationModal').style.display = 'none';
+  localStorage.setItem("donationPromptShown", "true");
+  startGame();
+}
+
