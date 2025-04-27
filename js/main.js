@@ -1,4 +1,4 @@
-// Updated main.js to Save User + Show Welcome Name 🎉 + Analytics 🚀
+// Updated main.js to Save User + Show Welcome Name 🎉 + Analytics 🚀 + Fix Coffee Button
 
 // Check if user is logged in
 firebase.auth().onAuthStateChanged(user => {
@@ -41,6 +41,12 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
     });
 });
 
+// Buy Coffee Button
+document.getElementById('donateButton').addEventListener('click', () => {
+  window.open("https://rzp.io/r/KrFqOuM", "_blank");
+  firebase.analytics().logEvent('donate_button_clicked'); // 🔥 Track Donate Click
+});
+
 // Save user info to Firestore
 function saveUserData(user) {
   firebase.firestore().collection('users').doc(user.uid).set({
@@ -61,7 +67,6 @@ function selectMode(mode) {
   document.getElementById('welcomeScreen').style.display = 'none';
   document.getElementById('setupScreen').style.display = 'block';
 
-  // Track which mode user selected
   firebase.analytics().logEvent('select_mode', { mode: selectedMode }); // 🔥 Track mode select
 
   if (['addition','subtraction','multiplication','division'].includes(mode)) {
@@ -113,9 +118,9 @@ function startGame() {
 
   questions = [];
   for (let i = 0; i < count; i++) {
-    let a, b, question, answer;
-    a = randomBetween(1, 999);
-    b = randomBetween(1, 999);
+    let a = randomBetween(1, 999);
+    let b = randomBetween(1, 999);
+    let question, answer;
 
     if (selectedMode === 'addition') {
       question = `${a} + ${b}`; answer = a + b;
