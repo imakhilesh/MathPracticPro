@@ -10,13 +10,13 @@
 <body>
   <div id="overlay"></div>
 
-  <!-- Payment/Ad Modal -->
-  <div id="paymentModal" class="container" style="display:none;">
-    <h2>Support MathPracticePro</h2>
-    <p>Choose an option to continue:</p>
+  <!-- Donation Modal -->
+  <div id="donationModal" class="container" style="display:none;">
+    <h2>Enjoying MathPracticePro?</h2>
+    <p>If you love using it, consider donating and supporting the creator! ❤️</p>
     <div class="menu-buttons">
-      <button onclick="payNow()">Pay ₹99 - Lifetime Access</button>
-      <button onclick="watchAd()">Watch an Ad</button>
+      <button onclick="donateNow()">Donate ₹99</button>
+      <button onclick="continuePlaying()">Continue for Free</button>
     </div>
   </div>
 
@@ -98,7 +98,7 @@
       </select>
     </div>
 
-    <button onclick="checkAccessBeforeStart()">Start Practice</button>
+    <button onclick="checkDonationPopup()">Start Practice</button>
     <button class="back-btn" onclick="backToWelcome()">Back</button>
   </div>
 
@@ -146,26 +146,20 @@
 <script src="firebase-config.js"></script>
 <script src="js/main.js"></script>
 
-<!-- Payment and Ad Scripts -->
+<!-- Donation Modal Script -->
 <script>
-  function checkAccessBeforeStart() {
-    if (localStorage.getItem("paidUser") === "true") {
-      startGame();
-    } else {
-      document.getElementById('welcomeScreen').style.display = 'none';
-      document.getElementById('setupScreen').style.display = 'none';
-      document.getElementById('paymentModal').style.display = 'block';
-    }
+  function checkDonationPopup() {
+    document.getElementById('donationModal').style.display = 'block';
+    document.getElementById('setupScreen').style.display = 'none';
   }
 
-  function payNow() {
-    window.location.href = "https://rzp.io/r/KrFqOuM"; // Your Razorpay payment link
+  function donateNow() {
+    window.open("https://rzp.io/r/KrFqOuM", "_blank");
   }
 
-  function watchAd() {
-    alert("Imagine ad here... 😅 (We'll integrate real AdSense later!)");
-    document.getElementById('paymentModal').style.display = 'none';
-    document.getElementById('setupScreen').style.display = 'block';
+  function continuePlaying() {
+    document.getElementById('donationModal').style.display = 'none';
+    startGame();
   }
 </script>
 
