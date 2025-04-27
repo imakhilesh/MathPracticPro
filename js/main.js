@@ -1,14 +1,12 @@
-// main.js - Final Updated Version with EmailJS + Firebase + Analytics + Button Fix
+// main.js - Fully Fixed Version (Donation Popup + Email + Game + Analytics)
 
 // --- Firebase Authentication Handling ---
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('welcomeScreen').style.display = 'block';
-
     const userName = user.displayName || "User";
     document.getElementById('welcomeUserName').innerHTML = `Welcome, ${userName}! 🎉`;
-
     saveUserData(user);
   } else {
     document.getElementById('loginScreen').style.display = 'block';
@@ -20,25 +18,15 @@ firebase.auth().onAuthStateChanged(user => {
 document.getElementById('loginBtn').addEventListener('click', () => {
   const provider = new firebase.auth.GoogleAuthProvider();
   firebase.auth().signInWithPopup(provider)
-    .then(result => {
-      console.log('Logged in');
-      firebase.analytics().logEvent('login', { method: 'Google' });
-    })
-    .catch(error => {
-      console.error('Login Error:', error.message);
-    });
+    .then(() => firebase.analytics().logEvent('login', { method: 'Google' }))
+    .catch(error => console.error('Login Error:', error.message));
 });
 
 // --- Logout ---
 document.getElementById('logoutBtn').addEventListener('click', () => {
   firebase.auth().signOut()
-    .then(() => {
-      console.log('Logged out');
-      firebase.analytics().logEvent('logout');
-    })
-    .catch(error => {
-      console.error('Logout Error:', error.message);
-    });
+    .then(() => firebase.analytics().logEvent('logout'))
+    .catch(error => console.error('Logout Error:', error.message));
 });
 
 // --- Save User to Firestore ---
@@ -61,20 +49,12 @@ function selectMode(mode) {
   document.getElementById('welcomeScreen').style.display = 'none';
   document.getElementById('setupScreen').style.display = 'block';
   firebase.analytics().logEvent('select_mode', { mode: selectedMode });
-
-  if (['addition','subtraction','multiplication','division'].includes(mode)) {
-    document.getElementById('digitRangeFields').style.display = 'block';
-    document.getElementById('normalRangeFields').style.display = 'none';
-  } else if (['mixed'].includes(mode)) {
-    document.getElementById('digitRangeFields').style.display = 'none';
-    document.getElementById('normalRangeFields').style.display = 'none';
-  }
+  document.getElementById('digitRangeFields').style.display = ['addition','subtraction','multiplication','division'].includes(mode) ? 'block' : 'none';
+  document.getElementById('normalRangeFields').style.display = mode === 'mixed' ? 'none' : 'none';
 }
 
 function backToWelcome() {
-  document.getElementById('setupScreen').style.display = 'none';
-  document.getElementById('endScreen').style.display = 'none';
-  document.getElementById('gameScreen').style.display = 'none';
+  ['setupScreen','endScreen','gameScreen'].forEach(id => document.getElementById(id).style.display = 'none');
   document.getElementById('welcomeScreen').style.display = 'block';
 }
 
@@ -93,41 +73,28 @@ function startGame() {
   questionsAttempted = 0;
   correctAnswers = 0;
   startTime = new Date();
+  timerDuration = { noob: 300000, beginner: 120000, pro: 60000, advanced: 30000, god: 10000 }[document.getElementById('difficulty').value] || 15000;
 
-  const difficulty = document.getElementById('difficulty').value;
-  timerDuration = difficulty === 'noob' ? 300000 : difficulty === 'beginner' ? 120000 : difficulty === 'pro' ? 60000 : difficulty === 'advanced' ? 30000 : 10000;
-
-  questions = [];
-  for (let i = 0; i < count; i++) {
-    let a = randomBetween(1, 999);
-    let b = randomBetween(1, 999);
-    let question, answer;
-
-    if (selectedMode === 'addition') { question = `${a} + ${b}`; answer = a + b; }
-    else if (selectedMode === 'subtraction') { question = `${a} - ${b}`; answer = a - b; }
-    else if (selectedMode === 'multiplication') { question = `${a} × ${b}`; answer = a * b; }
-    else if (selectedMode === 'division') { let product = a * b; question = `${product} ÷ ${a}`; answer = b; }
-    else {
-      const modes = ['addition','subtraction','multiplication','division'];
-      const randomMode = modes[Math.floor(Math.random() * modes.length)];
-      if (randomMode === 'addition') { question = `${a} + ${b}`; answer = a + b; }
-      else if (randomMode === 'subtraction') { question = `${a} - ${b}`; answer = a - b; }
-      else if (randomMode === 'multiplication') { question = `${a} × ${b}`; answer = a * b; }
-      else if (randomMode === 'division') { let product = a * b; question = `${product} ÷ ${a}`; answer = b; }
-    }
-
-    questions.push({ text: question, answer });
-  }
+  questions = Array.from({length: count}, () => generateQuestion());
 
   document.getElementById('setupScreen').style.display = 'none';
   document.getElementById('gameScreen').style.display = 'block';
   nextQuestion();
 }
 
+function generateQuestion() {
+  let a = randomBetween(1, 999), b = randomBetween(1, 999);
+  const modes = ['addition','subtraction','multiplication','division'];
+  const mode = selectedMode === 'mixed' ? modes[Math.floor(Math.random() * modes.length)] : selectedMode;
+  if (mode === 'addition') return { text: `${a} + ${b}`, answer: a + b };
+  if (mode === 'subtraction') return { text: `${a} - ${b}`, answer: a - b };
+  if (mode === 'multiplication') return { text: `${a} × ${b}`, answer: a * b };
+  if (mode === 'division') { let product = a * b; return { text: `${product} ÷ ${a}`, answer: b }; }
+}
+
 function nextQuestion() {
   clearTimeout(timer);
-
-  if (questions.length === 0) { showEndScreen(); return; }
+  if (questions.length === 0) return showEndScreen();
 
   currentQuestion = questions.pop();
   questionsAttempted++;
@@ -146,8 +113,7 @@ function submitAnswer() {
   const expected = parseFloat(currentQuestion.answer);
 
   if (Math.abs(userAnswer - expected) < 0.01) {
-    score++;
-    correctAnswers++;
+    score++; correctAnswers++;
     document.getElementById('bigFeedback').textContent = "Correct!";
     document.getElementById('correctSound').play();
   } else {
@@ -182,17 +148,12 @@ function showEndScreen() {
   document.getElementById('gameScreen').style.display = 'none';
   document.getElementById('endScreen').style.display = 'block';
   document.getElementById('finalScore').textContent = score;
-
-  const accuracy = Math.round((correctAnswers / totalQuestions) * 100);
-  document.getElementById('accuracy').textContent = accuracy;
-
-  const totalSec = (new Date() - startTime) / 1000;
-  document.getElementById('avgTime').textContent = (totalSec / totalQuestions).toFixed(1);
-  firebase.analytics().logEvent('game_complete', { score, accuracy });
+  document.getElementById('accuracy').textContent = Math.round((correctAnswers / totalQuestions) * 100);
+  document.getElementById('avgTime').textContent = ((new Date() - startTime) / 1000 / totalQuestions).toFixed(1);
+  firebase.analytics().logEvent('game_complete', { score, accuracy: Math.round((correctAnswers / totalQuestions) * 100) });
 }
 
 function playAgain() { backToWelcome(); }
-
 function randomBetween(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
 // --- Send Thank You EmailJS ---
@@ -204,28 +165,35 @@ function sendThankYouEmail() {
       email: user.email,
       message: "Thanks for showing coffee love! ☕️🚀"
     }, 'bwXYuKi_isO1fgwLl')
-    .then(function(response) {
-      console.log('✅ Email sent successfully!', response.status, response.text);
-    }, function(error) {
-      console.error('❌ Failed to send email', error);
-    });
-  } else {
-    console.log('User not logged in, cannot send thank you email.');
+    .then(response => console.log('Email sent:', response.status))
+    .catch(error => console.error('Email failed:', error));
   }
 }
 
+// --- Donation Modal Handling ---
+function checkDonationPopup() {
+  if (!localStorage.getItem("donationPromptShown")) {
+    document.getElementById('donationModal').style.display = 'block';
+    document.getElementById('setupScreen').style.display = 'none';
+  } else {
+    startGame();
+  }
+}
 
-// --- Donate Button Handling ---
+function continuePlaying() {
+  document.getElementById('donationModal').style.display = 'none';
+  localStorage.setItem("donationPromptShown", "true");
+  startGame();
+}
+
 function donateNow() {
   firebase.analytics().logEvent('donate_click');
   sendThankYouEmail();
   window.open("https://rzp.io/r/KrFqOuM", "_blank");
-  setTimeout(() => {
-    alert("🙏 Thank you for supporting the creator! ❤️");
-  }, 1000);
+  setTimeout(() => alert("🙏 Thank you for supporting the creator! ❤️"), 1000);
 }
 
 // Attach Donate Button after DOM Loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('donateButton').addEventListener('click', donateNow);
 });
