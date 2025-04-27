@@ -29,7 +29,7 @@
   <!-- Welcome Screen -->
   <div id="welcomeScreen" class="container" style="display: none;">
     <h1>Welcome to MathPracticePro!</h1>
-    <h2 id="welcomeUserName"></h2> <!-- This is now correct -->
+    <h2 id="welcomeUserName"></h2>
     <p>
       <a href="mailto:akhileshsaxena.1311@gmail.com?subject=Say%20hi!" style="color: #ffd700; text-decoration: none;">
         📧 Say hi to Creator
@@ -151,12 +151,10 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script> <!-- ADD THIS -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
 <script src="firebase-config.js"></script>
-<script src="js/main.js"></script>
 
-
-<!-- Auto Email Script -->
+<!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
 <script>
   (function(){
@@ -164,37 +162,7 @@
   })();
 </script>
 
-<script>
-function checkDonationPopup() {
-  // existing code...
-}
-
-// ✨ New donateNow
-function donateNow() {
-  firebase.analytics().logEvent('donate_click');
-  
-  emailjs.send("service_kbtqoqh", "template_ucsaksa", {
-    name: "MathPracticePro User",
-    email: "user@example.com",
-    message: "Thanks for showing coffee love! ☕🚀"
-  }).then(function(response) {
-    console.log('Email sent successfully!', response.status, response.text);
-  }, function(error) {
-    console.error('FAILED to send email', error);
-  });
-
-  window.open("https://rzp.io/r/KrFqOuM", "_blank");
-
-  setTimeout(() => {
-    alert("🙏 Thank you for supporting the creator! ❤️");
-  }, 1000);
-}
-
-function continuePlaying() {
-  // existing code...
-}
-</script>
-
+<script src="js/main.js"></script> <!-- Your corrected full main.js is here -->
 
 </body>
 </html>
