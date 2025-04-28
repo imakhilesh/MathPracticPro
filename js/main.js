@@ -21,7 +21,17 @@ document.getElementById('loginBtn').addEventListener('click', () => {
     .then(() => firebase.analytics().logEvent('login', { method: 'Google' }))
     .catch(error => console.error('Login Error:', error.message));
 });
-
+// --- Login as Guest (Anonymous Sign In) ---
+document.getElementById('guestLoginBtn').addEventListener('click', () => {
+  firebase.auth().signInAnonymously()
+    .then(() => {
+      console.log('Logged in as Guest');
+      firebase.analytics().logEvent('login', { method: 'Guest' });
+    })
+    .catch(error => {
+      console.error('Guest Login Error:', error.message);
+    });
+});
 // --- Logout ---
 document.getElementById('logoutBtn').addEventListener('click', () => {
   firebase.auth().signOut()
