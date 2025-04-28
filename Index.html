@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MathPracticePro - Master Math Basics</title>
-<link rel="icon"  href="/audio/favicon.png">
+  <link rel="icon" href="/audio/favicon.png">
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -24,7 +24,10 @@
   <!-- Login Screen -->
   <div id="loginScreen" class="container" style="display: none;">
     <h1>Login to Continue</h1>
-    <button id="loginBtn">Sign in with Google</button>
+    <div class="menu-buttons">
+      <button id="loginBtn">Sign in with Google</button>
+      <button id="guestLoginBtn">Continue as Guest</button>
+    </div>
   </div>
 
   <!-- Welcome Screen -->
@@ -106,7 +109,7 @@
       </select>
     </div>
 
-    <button onclick="checkDonationPopup()">Start Practice</button>
+    <button onclick="startGame()">Start Practice</button>
     <button class="back-btn" onclick="backToWelcome()">Back</button>
   </div>
 
@@ -148,23 +151,20 @@
   <audio id="correctSound" src="audio/correct.mp3" preload="auto"></audio>
   <audio id="wrongSound" src="audio/wrong.mp3" preload="auto"></audio>
 
-<!-- Firebase + EmailJS + Scripts -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
-<script src="firebase-config.js"></script>
+  <!-- Firebase + EmailJS + Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+  <script src="firebase-config.js"></script>
 
-<!-- Latest EmailJS SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3.11.0/dist/email.min.js"></script>
+  <!-- Latest EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3.11.0/dist/email.min.js"></script>
+  <script>
+    emailjs.init("bwXYuKi_isO1fgwLl");
+  </script>
 
-<!-- Initialize EmailJS -->
-<script>
-  emailjs.init("bwXYuKi_isO1fgwLl"); // only this simple line!
-</script>
-
-<!-- Your Main JS -->
-<script src="js/main.js"></script>
-
+  <!-- Your Main JS -->
+  <script src="js/main.js"></script>
 </body>
 </html>
