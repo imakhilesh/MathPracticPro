@@ -1,1 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Multiplication Master</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --bg: linear-gradient(135deg, #8E2DE2, #4A00E0);
+      --light: rgba(255, 255, 255, 0.1);
+      --white: #fff;
+      --accent: #9F53FF;
+    }
+    * {
+      box-sizing: border-box;
+      font-family: 'Fredoka', sans-serif;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      transition: background 0.3s ease;
+    }
+    h1 {
+      margin: 20px 0 10px;
+    }
+    .card {
+      background: var(--light);
+      border-radius: 20px;
+      padding: 20px;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+    label, select, input {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      font-size: 1rem;
+      color: var(--white);
+    }
+    select, input {
+      padding: 10px;
+      border-radius: 12px;
+      border: 2px solid var(--white);
+      background: rgb(159 83 255 / 50%);
+      color: var(--white);
+    }
+    button, .home1 {
+      background: var(--accent);
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+    button:hover, .home1:hover {
+      background: #B07DFF;
+    }
+    .question {
+      font-size: 2rem;
+      margin: 20px 0;
+      text-align: center;
+    }
+    .home1 {
+      background: #ffffff;
+      color: rgb(159 83 255);
+  padding: 12px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  width: 100%;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s;
+  box-sizing: border-box;
+  font-family: 'Fredoka', sans-serif;
+  text-decoration: none;
+  text-align: center;
+  display: inline-block; /* ensures padding + background apply correctly */
+}
+.home1:hover {
+  background: #da0b0b;
+  color: white;
+    }
+
+    .option-btn {
+      width: 45%;
+      margin: 5px;
+      padding: 15px;
+      border-radius: 14px;
+      background: white;
+      color: #4A00E0;
+      font-weight: bold;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .option-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(255,255,255,0.4);
+    }
+    .flex {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .control {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    #timer, #questionTracker {
+      text-align: center;
+      font-weight: bold;
+      margin: 5px 0;
+    }
+    #mascot {
+      text-align: center;
+      font-size: 2rem;
+      transition: transform 0.3s;
+    }
+    #streak {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 1.2rem;
+      color: gold;
+      font-weight: bold;
+    }
+    #result {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 1.1rem;
+    }
+    .hidden {
+      display: none;
+    }
+    .tint-green { animation: greenFlash 0.6s; }
+    .tint-red { animation: redFlash 0.6s; }
+
+    @keyframes greenFlash {
+      0% { background-color: #6a0dad; }
+      50% { background-color: #00e676; }
+      100% { background-color: #6a0dad; }
+    }
+    @keyframes redFlash {
+      0% { background-color: #6a0dad; }
+      50% { background-color: #ff1744; }
+      100% { background-color: #6a0dad; }
+    }
+
+    .floating-plus {
+      position: absolute;
+      color: gold;
+      font-size: 2rem;
+      animation: floatUp 1.2s ease-out;
+      pointer-events: none;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-40px); opacity: 0; }
+    }
+    .score-pulse {
+      animation: pulse 0.5s ease;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    .mascot-jump {
+      animation: jump 0.6s ease;
+    }
+    @keyframes jump {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0); }
+    }
+
+    #endScreen h2 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    #finalStats {
+      text-align: center;
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+<h1>Multiplication Master</h1>
+<div class="card" id="setup">
+  <label>Table From</label><input type="number" id="fromTable" value="2">
+  <label>Table To</label><input type="number" id="toTable" value="12">
+  <label>Mode</label>
+  <select id="mode">
+    <option value="questions">Fixed</option>
+    <option value="timer">Timed</option>
+    <option value="daily">Daily Challenge</option>
+  </select>
+  <div id="questionCountBox"><label>Questions</label><input type="number" id="questionCount" value="10"></div>
+  <div id="timerBox" class="hidden">
+    <label>Duration</label>
+    <select id="timerSelect">
+      <option value="60">1 Minute</option>
+      <option value="120">2 Minutes</option>
+      <option value="300">5 Minutes</option>
+    </select>
+  </div>
+  <label>Answer Mode</label>
+  <select id="answerType">
+    <option value="mcq">MCQ</option>
+    <option value="input">Type</option>
+  </select>
+  <button onclick="startGame()">Start</button>
+  <a href="../index.html" class="home1">Home</a>
+</div>
+<div class="card hidden" id="gameArea">
+  <div id="questionTracker"></div>
+  <div id="timer"></div>
+  <div id="mascot">🤔</div>
+  <div class="question" id="questionText"></div>
+  <div class="flex" id="optionsBox"></div>
+  <input type="number" id="inputAnswer" class="hidden" placeholder="Type your answer">
+  <button onclick="submitAnswer()" id="submitBtn" class="hidden">Submit</button>
+  <div id="streak"></div>
+  <div id="result"></div>
+  <div class="control">
+    <button onclick="pauseGame()">Pause</button>
+    <button onclick="goHome()">Home</button>
+  </div>
+</div>
+<div class="card hidden" id="endScreen">
+  <h2>🎉 Quiz Complete!</h2>
+  <div id="finalStats"></div>
+  <button onclick="goHome()">Play Again</button>
+</div>
+<audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_a4833b1df4.mp3"></audio>
+<audio id="wrongSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_92d54f9e1e.mp3"></audio>
+<script>
+let questions = [], current = 0, score = 0, timeLeft = 0, timer, paused = false, streak = 0, mode = "questions";
+const setup = document.getElementById('setup');
+const gameArea = document.getElementById('gameArea');
+const questionText = document.getElementById('questionText');
+const optionsBox = document.getElementById('optionsBox');
+const inputAnswer = document.getElementById('inputAnswer');
+const submitBtn = document.getElementById('submitBtn');
+const result = document.getElementById('result');
+const timerDisplay = document.getElementById('timer');
+const questionTracker = document.getElementById('questionTracker');
+const mascot = document.getElementById('mascot');
+const streakBox = document.getElementById('streak');
+const correctSound = document.getElementById('correctSound');
+const wrongSound = document.getElementById('wrongSound');
+
+document.getElementById('mode').addEventListener('change', e => {
+  document.getElementById('questionCountBox').classList.toggle('hidden', e.target.value !== 'questions');
+  document.getElementById('timerBox').classList.toggle('hidden', e.target.value !== 'timer');
+});
+
+function showFloatingPlus() {
+  const float = document.createElement('div');
+  float.className = 'floating-plus';
+  float.innerText = '+1';
+  float.style.left = '50%';
+  float.style.top = '50%';
+  float.style.transform = 'translate(-50%, -50%)';
+  document.body.appendChild(float);
+  setTimeout(() => float.remove(), 1200);
+}
+
+function startGame() {
+  const from = +document.getElementById('fromTable').value;
+  const to = +document.getElementById('toTable').value;
+  mode = document.getElementById('mode').value;
+  const answerMode = document.getElementById('answerType').value;
+  let total = mode === 'questions' ? +document.getElementById('questionCount').value : 999;
+
+  if (mode === 'daily') {
+    const today = new Date().toDateString();
+    const saved = localStorage.getItem('daily-' + today);
+    if (saved) return alert("You've already played today's challenge!");
+    total = 10;
+    localStorage.setItem('daily-' + today, true);
+  }
+
+  questions = Array.from({length: total}, () => {
+    let a = Math.floor(Math.random() * (to - from + 1)) + from;
+    let b = Math.floor(Math.random() * 10) + 1;
+    return { a, b };
+  });
+
+  score = 0;
+  current = 0;
+  streak = 0;
+  setup.classList.add('hidden');
+  gameArea.classList.remove('hidden');
+  if (mode === 'timer') {
+    timeLeft = +document.getElementById('timerSelect').value;
+    updateTimer();
+    timer = setInterval(() => {
+      if (!paused) {
+        timeLeft--;
+        updateTimer();
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          endGame();
+        }
+      }
+    }, 1000);
+  }
+  loadQuestion(answerMode);
+}
+
+function updateTimer() {
+  timerDisplay.innerText = `Time: ${timeLeft}s`;
+}
+
+function loadQuestion(answerMode) {
+  if (current >= questions.length) return endGame();
+  let {a, b} = questions[current];
+  let answer = a * b;
+  questionText.innerText = `${a} × ${b} = ?`;
+  questionTracker.innerText = `Question ${current + 1} of ${questions.length}`;
+  result.innerText = '';
+  optionsBox.innerHTML = '';
+  inputAnswer.classList.add('hidden');
+  submitBtn.classList.add('hidden');
+  if (answerMode === 'input') {
+    inputAnswer.classList.remove('hidden');
+    submitBtn.classList.remove('hidden');
+  } else {
+    let opts = new Set([answer]);
+    while (opts.size < 4) opts.add(answer + Math.floor(Math.random() * 11 - 5));
+    [...opts].sort(() => Math.random() - 0.5).forEach(val => {
+      let btn = document.createElement('button');
+      btn.innerText = val;
+      btn.className = 'option-btn';
+      btn.onclick = () => handleAnswer(val);
+      optionsBox.appendChild(btn);
+    });
+  }
+}
+
+function handleAnswer(ans) {
+  let correct = questions[current].a * questions[current].b;
+  if (ans === correct) {
+    score++; streak++;
+    showFloatingPlus();
+    mascot.classList.add('mascot-jump');
+    setTimeout(() => mascot.classList.remove('mascot-jump'), 600);
+    result.classList.add('score-pulse');
+    setTimeout(() => result.classList.remove('score-pulse'), 500);
+    document.body.classList.add('tint-green');
+    mascot.innerText = '✅';
+    correctSound.play();
+    if (streak >= 3) streakBox.innerText = `Streak x${streak}!`;
+    confetti();
+  } else {
+    document.body.classList.add('tint-red');
+    mascot.innerText = '❌';
+    streak = 0; streakBox.innerText = '';
+    wrongSound.play();
+  }
+  result.innerText = `Score: ${score} / ${current + 1}`;
+  setTimeout(() => {
+    document.body.classList.remove('tint-green', 'tint-red');
+    mascot.innerText = '🤔';
+    current++;
+    loadQuestion(document.getElementById('answerType').value);
+  }, 900);
+}
+
+function submitAnswer() {
+  let val = parseInt(inputAnswer.value);
+  if (!isNaN(val)) {
+    inputAnswer.value = '';
+    handleAnswer(val);
+  }
+}
+
+function pauseGame() {
+  paused = !paused;
+  alert(paused ? "Game paused." : "Resumed.");
+}
+
+function goHome() {
+  clearInterval(timer);
+  paused = false;
+  gameArea.classList.add('hidden');
+  setup.classList.remove('hidden');
+  document.getElementById("endScreen").classList.add("hidden");
+}
+
+function endGame() {
+  clearInterval(timer);
+  gameArea.classList.add('hidden');
+  result.innerText = `Score: ${score} / ${current}`;
+  const best = localStorage.getItem("highscore") || 0;
+  if (score > best) {
+    localStorage.setItem("highscore", score);
+  }
+  const finalStats = document.getElementById("finalStats");
+  finalStats.innerHTML = `
+    <p>✅ Correct: <strong>${score}</strong></p>
+    <p>❌ Total Questions: <strong>${current}</strong></p>
+    <p>🏆 High Score: <strong>${Math.max(score, best)}</strong></p>
+  `;
+  document.getElementById("endScreen").classList.remove("hidden");
+}
+</script>
+</body>
+</html>
 
