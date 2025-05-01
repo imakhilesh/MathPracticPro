@@ -106,7 +106,7 @@ function updateProgress() {
 }
 
 function startTimer() {
-  let timeLeft = 100;
+  let timeLeft = 1000;
   document.getElementById('timerBar').style.width = '100%';
   clearInterval(timer);
   timer = setInterval(() => {
